@@ -1,0 +1,92 @@
+{% extends "base.html" %} {% block title %}Manage Assignments{% endblock %} {%
+block content %}
+
+<div class="d-flex justify-content-between mb-3">
+  <h3>Project Assignments</h3>
+  <button
+    class="btn btn-success"
+    data-bs-toggle="modal"
+    data-bs-target="#assignModal"
+    onclick="openAssignModal()"
+  >
+    + Assign Project
+  </button>
+</div>
+
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>Employee</th>
+      <th>Project</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in assignments %}
+    <tr>
+      <td>{{ a.full_name }}</td>
+      <td>{{ a.project_name }}</td>
+      <td>
+        <a
+          href="/assignment/delete/{{ a.emp_id }}/{{ a.proj_id }}"
+          class="btn btn-sm btn-danger"
+          onclick="return confirm('Remove assignment?');"
+        >
+          Remove
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+<div class="modal fade" id="assignModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="/assignment/save">
+        <div class="modal-header">
+          <h5 class="modal-title">Assign Project</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-2">
+            <select class="form-select" name="employee_id" required>
+              <option value="">Select Employee</option>
+              {% for e in employees %}
+              <option value="{{ e.employee_id }}">{{ e.full_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <select class="form-select" name="project_id" required>
+              <option value="">Select Project</option>
+              {% for p in projects %}
+              <option value="{{ p.project_id }}">{{ p.project_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button class="btn btn-primary">Assign</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openAssignModal() {}
+</script>
+
+{% endblock %}

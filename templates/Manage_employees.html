@@ -1,0 +1,192 @@
+{% extends "base.html" %} {% block title %}Manage Employees{% endblock %} {%
+block content %}
+
+<div class="d-flex justify-content-between mb-3">
+  <h3>Manage Employees</h3>
+  <button
+    class="btn btn-success"
+    data-bs-toggle="modal"
+    data-bs-target="#employeeModal"
+    onclick="openAddModal()"
+  >
+    + Add Employee
+  </button>
+</div>
+
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Location</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in employees %}
+    <tr>
+      <td>{{ e.employee_id }}</td>
+      <td>{{ e.full_name }}</td>
+      <td>{{ e.email }}</td>
+      <td>{{ e.location }}</td>
+      <td>
+        <button
+          class="btn btn-sm btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#employeeModal"
+          data-id="{{ e.employee_id }}"
+          data-name="{{ e.full_name | default('') | e }}"
+          data-email="{{ e.email | default('') | e }}"
+          data-phone="{{ e.phone | default('') | e }}"
+          data-location="{{ e.location | default('') | e }}"
+          data-summary="{{ e.summary | default('') | e }}"
+          data-skills="{{ e.skills | default('') | e }}"
+          onclick="openEditModal(this)"
+        >
+          Edit
+        </button>
+
+        <a
+          href="/employee/delete/{{ e.employee_id }}"
+          class="btn btn-sm btn-danger"
+          onclick="return confirm('Delete this employee?');"
+        >
+          Delete
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="modal fade" id="employeeModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="/employee/save">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Add Employee</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="hidden" name="mode" id="mode" />
+
+          <div class="mb-2">
+            <input
+              class="form-control"
+              name="employee_id"
+              id="employee_id"
+              placeholder="Employee ID"
+              readonly
+            />
+          </div>
+
+          <div class="mb-2">
+            <input
+              class="form-control"
+              name="full_name"
+              id="full_name"
+              placeholder="Full Name"
+              required
+            />
+          </div>
+
+          <div class="mb-2">
+            <input
+              class="form-control"
+              name="email"
+              id="email"
+              placeholder="Email"
+              required
+            />
+          </div>
+
+          <div class="mb-2">
+            <input
+              class="form-control"
+              name="phone"
+              id="phone"
+              placeholder="Phone"
+              pattern="[0-9]{10}"
+              required
+            />
+          </div>
+
+          <div class="mb-2">
+            <input
+              class="form-control"
+              name="location"
+              id="emp_location"
+              placeholder="Location"
+              required
+            />
+          </div>
+          <div class="mb-2">
+            <textarea
+              class="form-control"
+              name="summary"
+              id="summary"
+              placeholder="Professional Summary"
+              rows="3"
+              required
+            >
+            </textarea>
+          </div>
+
+          <div class="mb-2">
+            <input
+              class="form-control"
+              name="skills"
+              id="skills"
+              placeholder="Skills (comma separated)"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openAddModal() {
+    modalTitle.innerText = "Add Employee";
+    mode.value = "add";
+
+    employee_id.value = "";
+    employee_id.readOnly = true;
+    employee_id.style.display = "none";
+    full_name.value = "";
+    email.value = "";
+    phone.value = "";
+    emp_location.value = "";
+    summary.value = "";
+    skills.value = "";
+  }
+
+  function openEditModal(btn) {
+    modalTitle.innerText = "Edit Employee";
+    mode.value = "edit";
+
+    employee_id.value = btn.dataset.id;
+    employee_id.readOnly = true;
+    employee_id.style.display = "block";
+    full_name.value = btn.dataset.name || "";
+    email.value = btn.dataset.email || "";
+    phone.value = btn.dataset.phone || "";
+    emp_location.value = btn.dataset.location || "";
+    summary.value = btn.dataset.summary || "";
+    skills.value = btn.dataset.skills || "";
+  }
+</script>
+
+{% endblock %}

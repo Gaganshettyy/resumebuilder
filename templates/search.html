@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %}Fetch Resume{% endblock %} {% block
+content %}
+
+<h3>Fetch Employee Resume</h3>
+
+<form method="POST" action="/resume">
+  <div class="row g-2 align-items-center">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        name="query"
+        placeholder="Enter Employee ID or Name"
+        required
+      />
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary">Fetch Resume</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

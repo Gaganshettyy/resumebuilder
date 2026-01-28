@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 40px;
+        color: #333;
+      }
+
+      
+      .header {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: 1px;
+      }
+
+      .contact {
+        font-size: 12px;
+        color: #555;
+        margin-top: 5px;
+      }
+
+      .section {
+        margin-top: 25px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-bottom: 2px solid #000;
+        padding-bottom: 4px;
+        margin-bottom: 10px;
+      }
+
+      
+      .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .skill {
+        background: #f2f2f2;
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 4px;
+      }
+
+      
+      .project {
+        margin-bottom: 15px;
+      }
+
+      .project-title {
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .project-desc {
+        font-size: 13px;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+
+  <body>
+   
+    <div class="header">
+      <h1>{{ employee.full_name }}</h1>
+      <div class="contact">
+        {{ employee.email }} | {{ employee.phone }} | {{ employee.location }}
+      </div>
+    </div>
+
+    
+    {% if employee.summary %}
+    <div class="section">
+      <div class="section-title">Professional Summary</div>
+      <p style="font-size: 13px; line-height: 1.5">{{ employee.summary }}</p>
+    </div>
+    {% endif %}
+
+    
+    <div class="section">
+      <div class="section-title">Technical Skills</div>
+      <div class="skills">
+        {% for skill in employee.skills.split(',') %}
+        <div class="skill">{{ skill.strip() }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+   
+    <div class="section">
+      <div class="section-title">Project Experience</div>
+      {% for p in projects %}
+      <div class="project">
+        <div class="project-title">{{ p.project_name }}</div>
+        <div class="project-desc">{{ p.description }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>
